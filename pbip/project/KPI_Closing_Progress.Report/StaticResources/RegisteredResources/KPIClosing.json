@@ -1,57 +1,71 @@
 {
-  "name": "KPI Closing",
-  "dataColors": ["#1F6FB2", "#9AA6B6", "#E8A33D", "#2BA39A", "#7A5195", "#EF5675", "#4C6A92", "#B5651D"],
-  "foreground": "#1B2A41",
-  "foregroundNeutralSecondary": "#5B6B7F",
-  "foregroundNeutralTertiary": "#8A97A8",
+  "name": "KPI Closing Modern",
+  "dataColors": ["#4F46E5", "#CBD5E1", "#0EA5E9", "#10B981", "#F59E0B", "#E11D48", "#8B5CF6", "#64748B"],
+  "foreground": "#0F172A",
+  "foregroundNeutralSecondary": "#64748B",
+  "foregroundNeutralTertiary": "#94A3B8",
   "background": "#FFFFFF",
-  "backgroundLight": "#F7F9FC",
-  "backgroundNeutral": "#E1E6EE",
-  "tableAccent": "#1F6FB2",
-  "good": "#1E8E5A",
-  "neutral": "#E8A33D",
-  "bad": "#C0392B",
+  "backgroundLight": "#F8FAFC",
+  "backgroundNeutral": "#E2E8F0",
+  "tableAccent": "#4F46E5",
+  "good": "#059669",
+  "neutral": "#F59E0B",
+  "bad": "#E11D48",
   "textClasses": {
-    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#1B2A41" },
-    "label": { "fontFace": "Segoe UI", "fontSize": 10, "color": "#5B6B7F" },
-    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 24, "color": "#123B5F" },
-    "header": { "fontFace": "Segoe UI Semibold", "fontSize": 10, "color": "#1B2A41" }
+    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#0F172A" },
+    "label": { "fontFace": "Segoe UI", "fontSize": 9, "color": "#64748B" },
+    "callout": { "fontFace": "Segoe UI Light", "fontSize": 28, "color": "#0F172A" },
+    "header": { "fontFace": "Segoe UI Semibold", "fontSize": 9, "color": "#64748B" }
   },
   "visualStyles": {
     "page": {
       "*": {
-        "background": [{ "color": { "solid": { "color": "#EEF2F7" } }, "transparency": 0 }],
-        "outspace": [{ "color": { "solid": { "color": "#E4E9F0" } }, "transparency": 0 }]
+        "background": [{ "color": { "solid": { "color": "#F6F8FB" } }, "transparency": 0 }],
+        "outspace": [{ "color": { "solid": { "color": "#EEF2F7" } }, "transparency": 0 }]
       }
     },
     "*": {
       "*": {
         "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
-        "border": [{ "show": true, "color": { "solid": { "color": "#DDE3EC" } }, "radius": 12, "width": 1 }],
-        "dropShadow": [{ "show": true, "preset": "Bottom", "position": "Outer", "color": { "solid": { "color": "#1B2A41" } }, "transparency": 88, "shadowBlur": 10, "shadowDistance": 2 }],
-        "padding": [{ "top": 8, "bottom": 8, "left": 12, "right": 12 }],
-        "title": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 11, "fontColor": { "solid": { "color": "#1B2A41" } } }]
+        "border": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "radius": 16, "width": 1 }],
+        "dropShadow": [{ "show": true, "preset": "Bottom", "position": "Outer", "color": { "solid": { "color": "#0F172A" } }, "transparency": 94, "shadowBlur": 18, "shadowDistance": 3 }],
+        "padding": [{ "top": 12, "bottom": 12, "left": 16, "right": 16 }],
+        "title": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 11, "fontColor": { "solid": { "color": "#0F172A" } } }],
+        "subTitle": [{ "fontFamily": "Segoe UI", "fontSize": 9, "fontColor": { "solid": { "color": "#94A3B8" } } }]
       }
     },
     "card": {
       "*": {
-        "title": [{ "alignment": "center", "fontSize": 10, "fontColor": { "solid": { "color": "#5B6B7F" } } }],
-        "labels": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 24, "color": { "solid": { "color": "#123B5F" } } }],
+        "title": [{ "alignment": "center", "fontFamily": "Segoe UI Semibold", "fontSize": 9, "fontColor": { "solid": { "color": "#64748B" } } }],
+        "subTitle": [{ "alignment": "center", "fontSize": 9 }],
+        "labels": [{ "fontFamily": "Segoe UI Light", "fontSize": 28, "color": { "solid": { "color": "#0F172A" } } }],
         "categoryLabels": [{ "show": false }]
       }
     },
     "slicer": {
       "*": {
-        "header": [{ "fontFamily": "Segoe UI Semibold", "textSize": 10, "fontColor": { "solid": { "color": "#5B6B7F" } } }],
-        "items": [{ "textSize": 10, "fontColor": { "solid": { "color": "#1B2A41" } } }]
+        "background": [{ "show": false }],
+        "border": [{ "show": false }],
+        "dropShadow": [{ "show": false }],
+        "padding": [{ "top": 0, "bottom": 0, "left": 4, "right": 4 }],
+        "header": [{ "fontFamily": "Segoe UI Semibold", "textSize": 9, "fontColor": { "solid": { "color": "#64748B" } } }],
+        "items": [{ "textSize": 10, "fontColor": { "solid": { "color": "#0F172A" } }, "background": { "solid": { "color": "#FFFFFF" } } }]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [{ "show": false }],
+        "border": [{ "show": false }],
+        "dropShadow": [{ "show": false }],
+        "padding": [{ "top": 0, "bottom": 0, "left": 0, "right": 0 }]
       }
     },
     "lineChart": {
       "*": {
-        "lineStyles": [{ "strokeWidth": 3, "showMarker": true, "markerSize": 4 }],
-        "valueAxis": [{ "gridlineShow": true, "gridlineColor": { "solid": { "color": "#E6EBF2" } }, "gridlineStyle": "dotted", "labelColor": { "solid": { "color": "#5B6B7F" } }, "titleColor": { "solid": { "color": "#5B6B7F" } } }],
-        "categoryAxis": [{ "labelColor": { "solid": { "color": "#5B6B7F" } }, "titleColor": { "solid": { "color": "#5B6B7F" } } }],
-        "legend": [{ "show": true, "position": "Top", "showTitle": false, "labelColor": { "solid": { "color": "#1B2A41" } } }]
+        "lineStyles": [{ "strokeWidth": 3, "showMarker": false, "lineChartType": "smooth", "interpolationSmooth": "monotoneX" }],
+        "valueAxis": [{ "gridlineShow": true, "gridlineColor": { "solid": { "color": "#EEF2F6" } }, "gridlineStyle": "solid", "gridlineThickness": 1, "showAxisTitle": false, "labelColor": { "solid": { "color": "#94A3B8" } }, "fontSize": 9 }],
+        "categoryAxis": [{ "gridlineShow": false, "showAxisTitle": false, "labelColor": { "solid": { "color": "#94A3B8" } }, "fontSize": 9 }],
+        "legend": [{ "show": true, "position": "Top", "showTitle": false, "fontSize": 9, "labelColor": { "solid": { "color": "#64748B" } } }]
       }
     }
   }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
   "name": "slicerThreshold",
   "position": {
-    "x": 1021,
-    "y": 100,
+    "x": 1022,
+    "y": 124,
     "z": 2004,
-    "width": 243,
-    "height": 72,
+    "width": 234,
+    "height": 56,
     "tabOrder": 2004
   },
   "visual": {

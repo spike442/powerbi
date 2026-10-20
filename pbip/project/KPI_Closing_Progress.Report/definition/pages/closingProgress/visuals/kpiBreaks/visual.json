@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
-  "name": "cardAmtDelta",
+  "name": "kpiBreaks",
   "position": {
-    "x": 1066,
-    "y": 8,
-    "z": 1004,
-    "width": 198,
-    "height": 84,
-    "tabOrder": 1004
+    "x": 771,
+    "y": 16,
+    "z": 1002,
+    "width": 235,
+    "height": 92,
+    "tabOrder": 1002
   },
   "visual": {
     "visualType": "card",
@@ -23,11 +23,11 @@
                       "Entity": "FactBreaks"
                     }
                   },
-                  "Property": "Residual Amount vs Previous"
+                  "Property": "Breaks # Current"
                 }
               },
-              "queryRef": "FactBreaks.Residual Amount vs Previous",
-              "nativeQueryRef": "Residual Amount vs Previous"
+              "queryRef": "FactBreaks.Breaks # Current",
+              "nativeQueryRef": "Breaks # Current"
             }
           ]
         }
@@ -50,28 +50,10 @@
       "labels": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "24D"
-                }
-              }
-            },
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5B6B7F'"
-                    }
-                  }
+                  "Value": "1D"
                 }
               }
             }
@@ -93,7 +75,48 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'AMOUNT VS PREVIOUS (SAME DAY)'"
+                  "Value": "'BREAKS'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactBreaks"
+                    }
+                  },
+                  "Property": "Breaks Delta Label"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactBreaks"
+                        }
+                      },
+                      "Property": "Breaks vs Previous Color"
+                    }
+                  }
                 }
               }
             }

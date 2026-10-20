@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
-  "name": "cardBreaksCur",
+  "name": "kpiClosing",
   "position": {
-    "x": 472,
-    "y": 8,
+    "x": 520,
+    "y": 16,
     "z": 1001,
-    "width": 190,
-    "height": 84,
+    "width": 235,
+    "height": 92,
     "tabOrder": 1001
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "FactBreaks"
                     }
                   },
-                  "Property": "Breaks # Current"
+                  "Property": "Closing Day Label"
                 }
               },
-              "queryRef": "FactBreaks.Breaks # Current",
-              "nativeQueryRef": "Breaks # Current"
+              "queryRef": "FactBreaks.Closing Day Label",
+              "nativeQueryRef": "Closing Day Label"
             }
           ]
         }
@@ -50,13 +50,6 @@
       "labels": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "24D"
-                }
-              }
-            },
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
@@ -82,7 +75,43 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'BREAKS · CURRENT'"
+                  "Value": "'CURRENT CLOSING'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactBreaks"
+                    }
+                  },
+                  "Property": "Closing Subtitle"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#64748B'"
+                    }
+                  }
                 }
               }
             }
