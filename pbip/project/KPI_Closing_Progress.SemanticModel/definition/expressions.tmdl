@@ -1,0 +1,4 @@
+expression DsnName = "HERA_CH" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 0d0b021e-6939-5f31-bc32-585e8189e04e
+
+	annotation PBI_ResultType = Text

@@ -1,0 +1,286 @@
+table FactBreaks
+	lineageTag: b18a5c09-c027-55d3-bf38-838d13bcae43
+
+	measure 'Breaks #' =
+			VAR _lastDate = MAX ( FactBreaks[record_date] )
+			RETURN
+			    CALCULATE ( SUM ( FactBreaks[nb_breaks] ), FactBreaks[record_date] = _lastDate )
+		formatString: #,0
+		lineageTag: 473ae665-5858-5de6-a5d0-9151dfca1519
+
+	measure 'Residual Amount (EUR)' =
+			VAR _lastDate = MAX ( FactBreaks[record_date] )
+			RETURN
+			    CALCULATE ( SUM ( FactBreaks[amt_breaks] ), FactBreaks[record_date] = _lastDate )
+		formatString: #,0
+		lineageTag: 15f71916-0bc5-56c5-8580-f865bc710691
+
+	measure 'Snapshot Date' =
+			MAX ( FactBreaks[record_date] )
+		formatString: dd/mm/yyyy
+		lineageTag: 1138b32b-ddaa-5c51-b336-4a18f9bbe10e
+
+	measure 'Current Closing Day' =
+			CALCULATE (
+			    MAX ( FactBreaks[closing_day] ),
+			    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+			    FactBreaks[closing_rank] = 1
+			)
+		formatString: 0
+		lineageTag: 493c2b8e-85a0-505d-b526-cce3f1f5b005
+
+	measure 'Breaks # Current' =
+			CALCULATE (
+			    [Breaks #],
+			    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+			    FactBreaks[closing_rank] = 1
+			)
+		formatString: #,0
+		lineageTag: 9e06a967-b3dc-5ba5-b323-d7d3d47ba855
+
+	measure 'Breaks # Previous' =
+			VAR _day = [Current Closing Day]
+			RETURN
+			    CALCULATE (
+			        [Breaks #],
+			        REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date], FactBreaks[closing_day] ),
+			        FactBreaks[closing_rank] = 2,
+			        FactBreaks[closing_day] <= _day
+			    )
+		formatString: #,0
+		lineageTag: f3a55889-bcc4-5982-bec0-748510c364e8
+
+	measure 'Breaks # vs Previous' =
+			[Breaks # Current] - [Breaks # Previous]
+		formatString: #,0
+		lineageTag: fff870e6-7d6f-5467-8990-cf308abb9f22
+
+	measure 'Breaks # vs Previous %' =
+			DIVIDE ( [Breaks # vs Previous], [Breaks # Previous] )
+		formatString: 0.0%
+		lineageTag: debc1985-d651-5bba-a245-b9e609340d5f
+
+	measure 'Residual Amount Current' =
+			CALCULATE (
+			    [Residual Amount (EUR)],
+			    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+			    FactBreaks[closing_rank] = 1
+			)
+		formatString: #,0
+		lineageTag: 931ef144-ed10-5dd9-b52d-394c65e77c8e
+
+	measure 'Residual Amount Previous' =
+			VAR _day = [Current Closing Day]
+			RETURN
+			    CALCULATE (
+			        [Residual Amount (EUR)],
+			        REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date], FactBreaks[closing_day] ),
+			        FactBreaks[closing_rank] = 2,
+			        FactBreaks[closing_day] <= _day
+			    )
+		formatString: #,0
+		lineageTag: 0bd57ffa-a1f8-59cd-9f97-2020dc1af767
+
+	measure 'Residual Amount vs Previous' =
+			[Residual Amount Current] - [Residual Amount Previous]
+		formatString: #,0
+		lineageTag: 71621ed3-e407-5dd3-af5f-b1e46cc28eac
+
+	measure 'Closing Title' =
+			VAR _cur  = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
+			VAR _prev = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 2 )
+			VAR _snap = CALCULATE ( MAX ( FactBreaks[record_date] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
+			RETURN
+			    "Closing " & _cur & " vs " & _prev & "  ·  last snapshot " & FORMAT ( _snap, "dd/mm/yyyy" )
+		lineageTag: ac7ba257-0957-5a03-8058-d13c91495b06
+
+	column period
+		dataType: string
+		lineageTag: b9950ff1-a5be-5da8-b84e-61701701431e
+		summarizeBy: none
+		sourceColumn: period
+
+		annotation SummarizationSetBy = User
+
+	column record_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 45c19953-42b5-531e-ad5e-b650b779158f
+		summarizeBy: none
+		sourceColumn: record_date
+
+		annotation SummarizationSetBy = User
+
+	column closing_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 19f41482-e3ad-5c60-a518-08295addfad4
+		summarizeBy: none
+		sourceColumn: closing_rank
+
+		annotation SummarizationSetBy = User
+
+	column closing
+		dataType: string
+		lineageTag: 4a7c3efd-0fa9-513c-9c9c-2bfe77086ca0
+		summarizeBy: none
+		sourceColumn: closing
+		sortByColumn: closing_rank
+
+		annotation SummarizationSetBy = User
+
+	column closing_day
+		dataType: int64
+		formatString: 0
+		lineageTag: ac79badf-3704-5975-960a-5d19404ebb36
+		summarizeBy: none
+		sourceColumn: closing_day
+
+		annotation SummarizationSetBy = User
+
+	column rec_id
+		dataType: string
+		lineageTag: f2dcc0fc-6f83-5248-af58-7e90125b2145
+		summarizeBy: none
+		sourceColumn: rec_id
+
+		annotation SummarizationSetBy = User
+
+	column reconciliation
+		dataType: string
+		lineageTag: 493dfb09-ee04-52f6-8480-6c3bd553cbec
+		summarizeBy: none
+		sourceColumn: reconciliation
+
+		annotation SummarizationSetBy = User
+
+	column entity
+		dataType: string
+		lineageTag: bc128823-63af-53d4-9a13-6e9daa699613
+		summarizeBy: none
+		sourceColumn: entity
+
+		annotation SummarizationSetBy = User
+
+	column product
+		dataType: string
+		lineageTag: 63739505-ae57-526e-84d4-016a12f93b43
+		summarizeBy: none
+		sourceColumn: product
+
+		annotation SummarizationSetBy = User
+
+	column component
+		dataType: string
+		lineageTag: b0df40bf-a5f9-581a-8d1c-3fd1bf0230e1
+		summarizeBy: none
+		sourceColumn: component
+
+		annotation SummarizationSetBy = User
+
+	column threshold
+		dataType: string
+		lineageTag: a4948df6-c02b-5644-a8a8-3db4f4a60330
+		summarizeBy: none
+		sourceColumn: threshold
+
+		annotation SummarizationSetBy = User
+
+	column nb_breaks
+		dataType: int64
+		formatString: #,0
+		lineageTag: e52677b5-d248-5a7d-9440-05acc258974f
+		summarizeBy: none
+		sourceColumn: nb_breaks
+
+		annotation SummarizationSetBy = User
+
+	column amt_breaks
+		dataType: double
+		formatString: #,0
+		lineageTag: d19bd465-d238-5c92-afec-cdb025e018ca
+		summarizeBy: none
+		sourceColumn: amt_breaks
+
+		annotation SummarizationSetBy = User
+
+	partition FactBreaks = m
+		mode: import
+		source =
+				let
+				    Sql = "WITH latest AS (
+				    SELECT REC_ID, PERIOD, CMN_RECORD_DATE, max(VERSION) AS VERSION
+				    FROM Hera_SA.KPI_REC_ALL
+				    GROUP BY REC_ID, PERIOD, CMN_RECORD_DATE
+				),
+				unpivoted AS (
+				    SELECT
+				        k.PERIOD                AS period,
+				        k.CMN_RECORD_DATE       AS record_date,
+				        k.REC_ID                AS rec_id,
+				        k.ENT_ACC               AS entity,
+				        if(empty(k.CAT_NAME), '(No category)', k.CAT_NAME) AS product,
+				        tupleElement(m, 1)      AS component,
+				        tupleElement(m, 2)      AS threshold,
+				        tupleElement(m, 3)      AS nb,
+				        tupleElement(m, 4)      AS amt
+				    FROM Hera_SA.KPI_REC_ALL AS k
+				    ARRAY JOIN [
+				        ('PNL',  'Above', NB_YPNL_BREAK_BGM_ECO_EUR_ABOVE,  AMT_YPNL_BREAK_BGM_ECO_EUR_ABOVE),
+				        ('PNL',  'Below', NB_YPNL_BREAK_BGM_ECO_EUR_BELOW,  AMT_YPNL_BREAK_BGM_ECO_EUR_BELOW)
+				    ] AS m
+				    WHERE (k.REC_ID, k.PERIOD, k.CMN_RECORD_DATE, k.VERSION) IN (SELECT REC_ID, PERIOD, CMN_RECORD_DATE, VERSION FROM latest)
+				),
+				agg AS (
+				    SELECT period, record_date, rec_id, entity, product, component, threshold,
+				           toInt64(sum(nb))    AS nb_breaks,
+				           toFloat64(sum(if(isFinite(amt), amt, 0))) AS amt_breaks
+				    FROM unpivoted
+				    GROUP BY period, record_date, rec_id, entity, product, component, threshold
+				),
+				ranked AS (
+				    SELECT
+				        agg.*,
+				        dense_rank() OVER (ORDER BY substring(period, 1, 6) DESC)                AS closing_rank,
+				        dateDiff('day', min(record_date) OVER (PARTITION BY period), record_date) + 1 AS closing_day
+				    FROM agg
+				)
+				SELECT
+				    period,
+				    record_date,
+				    closing_rank,
+				    multiIf(closing_rank = 1, 'Current', closing_rank = 2, 'Previous', 'Older')
+				        || ' (' || period || ')'                                                AS closing,
+				    closing_day,
+				    rec_id,
+				    multiIf(positionCaseInsensitive(rec_id, 'CARRY') > 0, 'Carry',
+				            positionCaseInsensitive(rec_id, 'FRZ') > 0,   'PNL',
+				            rec_id)                                                             AS reconciliation,
+				    entity,
+				    product,
+				    component,
+				    threshold,
+				    nb_breaks,
+				    amt_breaks
+				FROM ranked
+				WHERE closing_rank <= 2",
+				    Source = Odbc.Query("dsn=" & DsnName, Sql),
+				    Typed = Table.TransformColumnTypes(Source, {
+				        {"period", type text},
+				        {"record_date", type date},
+				        {"closing_rank", Int64.Type},
+				        {"closing", type text},
+				        {"closing_day", Int64.Type},
+				        {"rec_id", type text},
+				        {"reconciliation", type text},
+				        {"entity", type text},
+				        {"product", type text},
+				        {"component", type text},
+				        {"threshold", type text},
+				        {"nb_breaks", Int64.Type},
+				        {"amt_breaks", type number}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
