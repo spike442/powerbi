@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
   "name": "chartAmtAbove",
   "position": {
-    "x": 24,
-    "y": 456,
+    "x": 16,
+    "y": 404,
     "z": 3001,
-    "width": 608,
-    "height": 244,
+    "width": 616,
+    "height": 308,
     "tabOrder": 3001
   },
   "visual": {
@@ -131,6 +131,53 @@
                   "Value": "'Scalar'"
                 }
               }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Closing day'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lineStyles": [
+        {
+          "properties": {
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
             }
           }
         }
@@ -150,27 +197,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Residual amount · Above threshold'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'EUR · per closing day'"
+                  "Value": "'Residual amount per closing day – Above'"
                 }
               }
             }

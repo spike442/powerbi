@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
   "name": "chartBreaks",
   "position": {
-    "x": 24,
-    "y": 196,
+    "x": 16,
+    "y": 92,
     "z": 3000,
-    "width": 1232,
-    "height": 244,
+    "width": 1248,
+    "height": 300,
     "tabOrder": 3000
   },
   "visual": {
@@ -98,20 +98,6 @@
               },
               "queryRef": "FactBreaks.Breaks # vs Previous",
               "nativeQueryRef": "Breaks # vs Previous"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "FactBreaks"
-                    }
-                  },
-                  "Property": "Breaks # vs Previous %"
-                }
-              },
-              "queryRef": "FactBreaks.Breaks # vs Previous %",
-              "nativeQueryRef": "Breaks # vs Previous %"
             }
           ]
         }
@@ -145,6 +131,53 @@
                   "Value": "'Scalar'"
                 }
               }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Closing day'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lineStyles": [
+        {
+          "properties": {
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
             }
           }
         }
@@ -164,27 +197,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Breaks per closing day'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Number of breaks · follows the threshold filter'"
+                  "Value": "'Number of breaks per closing day'"
                 }
               }
             }

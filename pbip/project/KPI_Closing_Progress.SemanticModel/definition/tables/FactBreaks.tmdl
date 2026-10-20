@@ -52,12 +52,12 @@ table FactBreaks
 
 	measure 'Breaks # vs Previous' =
 			[Breaks # Current] - [Breaks # Previous]
-		formatString: ▲ #,0;▼ #,0;0
+		formatString: #,0
 		lineageTag: fff870e6-7d6f-5467-8990-cf308abb9f22
 
 	measure 'Breaks # vs Previous %' =
 			DIVIDE ( [Breaks # vs Previous], [Breaks # Previous] )
-		formatString: ▲ 0.0%;▼ 0.0%;0.0%
+		formatString: 0.0%
 		lineageTag: debc1985-d651-5bba-a245-b9e609340d5f
 
 	measure 'Residual Amount Current' =
@@ -83,50 +83,8 @@ table FactBreaks
 
 	measure 'Residual Amount vs Previous' =
 			[Residual Amount Current] - [Residual Amount Previous]
-		formatString: ▲ #,0;▼ #,0;0
+		formatString: #,0
 		lineageTag: 71621ed3-e407-5dd3-af5f-b1e46cc28eac
-
-	measure 'Closing Title' =
-			VAR _cur  = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
-			VAR _prev = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 2 )
-			VAR _snap = CALCULATE ( MAX ( FactBreaks[record_date] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
-			RETURN
-			    "Closing " & _cur & " vs " & _prev & "  ·  last snapshot " & FORMAT ( _snap, "dd/mm/yyyy" )
-		lineageTag: ac7ba257-0957-5a03-8058-d13c91495b06
-
-	measure 'Breaks vs Previous Color' =
-			VAR _delta = [Breaks # vs Previous]
-			RETURN
-			    SWITCH ( TRUE (), ISBLANK ( _delta ), "#94A3B8", _delta > 0, "#E11D48", "#059669" )
-		lineageTag: 9ec9b4e9-bf42-5fc4-8b7f-b6925811526f
-
-	measure 'Closing Day Label' =
-			"Day " & FORMAT ( [Current Closing Day], "0" )
-		lineageTag: 92361013-9081-52ea-983d-5dd3cf259aa7
-
-	measure 'Closing Subtitle' =
-			VAR _cur  = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
-			VAR _prev = CALCULATE ( MAX ( FactBreaks[period] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 2 )
-			VAR _snap = CALCULATE ( MAX ( FactBreaks[record_date] ), REMOVEFILTERS ( FactBreaks ), FactBreaks[closing_rank] = 1 )
-			RETURN
-			    _cur & " vs " & _prev & "  ·  snapshot " & FORMAT ( _snap, "dd/mm/yyyy" )
-		lineageTag: 0bf0ca92-b670-5f0a-b4e2-24a83e4c2f65
-
-	measure 'Breaks Delta Label' =
-			IF (
-			    ISBLANK ( [Breaks # Previous] ),
-			    "No previous closing data",
-			    FORMAT ( [Breaks # vs Previous], "▲ #,0;▼ #,0;= 0" ) & "  vs previous · same day"
-			)
-		lineageTag: 43b88522-0bde-5808-976f-91b478fc87e4
-
-	measure 'Amount Delta Label' =
-			IF (
-			    ISBLANK ( [Residual Amount Previous] ),
-			    "No previous closing data",
-			    FORMAT ( [Residual Amount vs Previous] / 1000000, "▲ #,0.0;▼ #,0.0;= 0" ) & " M€  vs previous · same day"
-			)
-		lineageTag: 557ee241-0285-556d-ad65-4bca78bc64df
 
 	column period
 		dataType: string

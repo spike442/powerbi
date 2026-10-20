@@ -3,10 +3,10 @@
   "name": "chartAmtBelow",
   "position": {
     "x": 648,
-    "y": 456,
+    "y": 404,
     "z": 3002,
-    "width": 608,
-    "height": 244,
+    "width": 616,
+    "height": 308,
     "tabOrder": 3002
   },
   "visual": {
@@ -131,6 +131,53 @@
                   "Value": "'Scalar'"
                 }
               }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Closing day'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lineStyles": [
+        {
+          "properties": {
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
             }
           }
         }
@@ -150,27 +197,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Residual amount · Below threshold'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'EUR · per closing day'"
+                  "Value": "'Residual amount per closing day – Below'"
                 }
               }
             }

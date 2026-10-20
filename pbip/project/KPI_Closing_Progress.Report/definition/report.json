@@ -5,11 +5,6 @@
       "name": "CY25SU12",
       "reportVersionAtImport": "5.61",
       "type": "SharedResources"
-    },
-    "customTheme": {
-      "name": "KPIClosing.json",
-      "reportVersionAtImport": "5.61",
-      "type": "RegisteredResources"
     }
   },
   "layoutOptimization": "None",
@@ -22,17 +17,6 @@
           "name": "CY25SU12",
           "path": "BaseThemes/CY25SU12.json",
           "type": "BaseTheme"
-        }
-      ]
-    },
-    {
-      "name": "RegisteredResources",
-      "type": "RegisteredResources",
-      "items": [
-        {
-          "name": "KPIClosing.json",
-          "path": "KPIClosing.json",
-          "type": "CustomTheme"
         }
       ]
     }
