@@ -3,10 +3,10 @@
   "name": "chartAmtBelow",
   "position": {
     "x": 648,
-    "y": 444,
+    "y": 450,
     "z": 3002,
     "width": 616,
-    "height": 268,
+    "height": 262,
     "tabOrder": 3002
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "FactBreaks.closing_day",
-              "nativeQueryRef": "closing_day"
+              "nativeQueryRef": "closing_day",
+              "displayName": "Closing day"
             }
           ]
         },
@@ -45,7 +46,8 @@
                 }
               },
               "queryRef": "FactBreaks.closing",
-              "nativeQueryRef": "closing"
+              "nativeQueryRef": "closing",
+              "displayName": "Closing"
             }
           ]
         },
@@ -126,7 +128,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Categorical'"
+                  "Value": "'Scalar'"
                 }
               }
             },

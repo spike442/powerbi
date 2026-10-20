@@ -3,10 +3,10 @@
   "name": "chartBreaks",
   "position": {
     "x": 16,
-    "y": 168,
+    "y": 182,
     "z": 3000,
     "width": 1248,
-    "height": 268,
+    "height": 260,
     "tabOrder": 3000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "FactBreaks.closing_day",
-              "nativeQueryRef": "closing_day"
+              "nativeQueryRef": "closing_day",
+              "displayName": "Closing day"
             }
           ]
         },
@@ -45,7 +46,8 @@
                 }
               },
               "queryRef": "FactBreaks.closing",
-              "nativeQueryRef": "closing"
+              "nativeQueryRef": "closing",
+              "displayName": "Closing"
             }
           ]
         },
@@ -140,7 +142,7 @@
             "axisType": {
               "expr": {
                 "Literal": {
-                  "Value": "'Categorical'"
+                  "Value": "'Scalar'"
                 }
               }
             },

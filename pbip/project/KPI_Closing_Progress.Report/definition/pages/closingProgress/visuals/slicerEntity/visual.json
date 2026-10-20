@@ -3,10 +3,10 @@
   "name": "slicerEntity",
   "position": {
     "x": 267,
-    "y": 96,
+    "y": 100,
     "z": 2001,
     "width": 243,
-    "height": 64,
+    "height": 72,
     "tabOrder": 2001
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "FactBreaks.entity",
-              "nativeQueryRef": "entity"
+              "nativeQueryRef": "entity",
+              "displayName": "Entity"
             }
           ]
         }
@@ -61,28 +62,6 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "visualContainerObjects": {
-      "title": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Entity'"
                 }
               }
             }

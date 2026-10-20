@@ -3,10 +3,10 @@
   "name": "slicerProduct",
   "position": {
     "x": 518,
-    "y": 96,
+    "y": 100,
     "z": 2002,
     "width": 243,
-    "height": 64,
+    "height": 72,
     "tabOrder": 2002
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "FactBreaks.product",
-              "nativeQueryRef": "product"
+              "nativeQueryRef": "product",
+              "displayName": "Product"
             }
           ]
         }
@@ -61,28 +62,6 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "visualContainerObjects": {
-      "title": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Product'"
                 }
               }
             }

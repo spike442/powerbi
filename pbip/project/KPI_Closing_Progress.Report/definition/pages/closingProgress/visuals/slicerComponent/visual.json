@@ -3,10 +3,10 @@
   "name": "slicerComponent",
   "position": {
     "x": 770,
-    "y": 96,
+    "y": 100,
     "z": 2003,
     "width": 243,
-    "height": 64,
+    "height": 72,
     "tabOrder": 2003
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "FactBreaks.component",
-              "nativeQueryRef": "component"
+              "nativeQueryRef": "component",
+              "displayName": "PNL Component"
             }
           ]
         }
@@ -102,28 +103,6 @@
                     }
                   }
                 ]
-              }
-            }
-          }
-        }
-      ]
-    },
-    "visualContainerObjects": {
-      "title": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'PNL Component'"
-                }
               }
             }
           }
