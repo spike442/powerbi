@@ -52,12 +52,12 @@ table FactBreaks
 
 	measure 'Breaks # vs Previous' =
 			[Breaks # Current] - [Breaks # Previous]
-		formatString: #,0
+		formatString: ▲ #,0;▼ #,0;0
 		lineageTag: fff870e6-7d6f-5467-8990-cf308abb9f22
 
 	measure 'Breaks # vs Previous %' =
 			DIVIDE ( [Breaks # vs Previous], [Breaks # Previous] )
-		formatString: 0.0%
+		formatString: ▲ 0.0%;▼ 0.0%;0.0%
 		lineageTag: debc1985-d651-5bba-a245-b9e609340d5f
 
 	measure 'Residual Amount Current' =
@@ -83,7 +83,7 @@ table FactBreaks
 
 	measure 'Residual Amount vs Previous' =
 			[Residual Amount Current] - [Residual Amount Previous]
-		formatString: #,0
+		formatString: ▲ #,0;▼ #,0;0
 		lineageTag: 71621ed3-e407-5dd3-af5f-b1e46cc28eac
 
 	measure 'Closing Title' =
@@ -93,6 +93,12 @@ table FactBreaks
 			RETURN
 			    "Closing " & _cur & " vs " & _prev & "  ·  last snapshot " & FORMAT ( _snap, "dd/mm/yyyy" )
 		lineageTag: ac7ba257-0957-5a03-8058-d13c91495b06
+
+	measure 'Breaks vs Previous Color' =
+			VAR _delta = [Breaks # vs Previous]
+			RETURN
+			    SWITCH ( TRUE (), ISBLANK ( _delta ), "#5B6B7F", _delta > 0, "#C0392B", "#1E8E5A" )
+		lineageTag: 9ec9b4e9-bf42-5fc4-8b7f-b6925811526f
 
 	column period
 		dataType: string

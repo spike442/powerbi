@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Residual amount – current'"
+                  "Value": "'RESIDUAL AMOUNT · CURRENT'"
                 }
               }
             }

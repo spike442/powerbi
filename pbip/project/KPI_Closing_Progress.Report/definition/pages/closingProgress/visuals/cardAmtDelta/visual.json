@@ -63,6 +63,17 @@
                   "Value": "0D"
                 }
               }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5B6B7F'"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -82,7 +93,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Amount vs previous (same day)'"
+                  "Value": "'AMOUNT VS PREVIOUS (SAME DAY)'"
                 }
               }
             }

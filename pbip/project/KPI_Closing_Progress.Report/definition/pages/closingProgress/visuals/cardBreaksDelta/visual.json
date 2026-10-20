@@ -63,6 +63,22 @@
                   "Value": "1D"
                 }
               }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactBreaks"
+                        }
+                      },
+                      "Property": "Breaks vs Previous Color"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -82,7 +98,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Breaks vs previous (same day)'"
+                  "Value": "'BREAKS VS PREVIOUS (SAME DAY)'"
                 }
               }
             }
