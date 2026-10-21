@@ -90,6 +90,10 @@ table FactBreaks
 			"Snapshot " & FORMAT ( MAX ( FactBreaks[record_date] ), "dd/mm/yyyy" ) & "  ·  closing " & MAX ( FactBreaks[period] )
 		lineageTag: 816c4ec4-ba5f-5b0a-b79c-9eb434469081
 
+	measure 'Year Subtitle' =
+			"Closings of " & LEFT ( MAX ( FactBreaks[period] ), 4 ) & "  ·  latest snapshot of each closing (current closing: in progress)"
+		lineageTag: 14457d4a-692b-5c1e-a9af-19e43edc9978
+
 	column period
 		dataType: string
 		lineageTag: b9950ff1-a5be-5da8-b84e-61701701431e
@@ -122,6 +126,31 @@ table FactBreaks
 		summarizeBy: none
 		sourceColumn: closing
 		sortByColumn: closing_rank
+
+		annotation SummarizationSetBy = User
+
+	column closing_scope
+		dataType: string
+		lineageTag: df64e0d7-e092-59ae-871f-5baed55f86da
+		summarizeBy: none
+		sourceColumn: closing_scope
+
+		annotation SummarizationSetBy = User
+
+	column closing_month
+		dataType: string
+		lineageTag: 54441467-2413-5de2-aac4-c45c8d16dabb
+		summarizeBy: none
+		sourceColumn: closing_month
+		sortByColumn: period
+
+		annotation SummarizationSetBy = User
+
+	column year_trend_snapshot
+		dataType: string
+		lineageTag: fba4716d-9afa-5808-8f41-a68c0a06981b
+		summarizeBy: none
+		sourceColumn: year_trend_snapshot
 
 		annotation SummarizationSetBy = User
 
@@ -279,7 +308,9 @@ table FactBreaks
 				    SELECT
 				        agg.*,
 				        dense_rank() OVER (ORDER BY substring(period, 1, 6) DESC)                AS closing_rank,
-				        dateDiff('day', min(record_date) OVER (PARTITION BY period), record_date) + 1 AS closing_day
+				        dateDiff('day', min(record_date) OVER (PARTITION BY period), record_date) + 1 AS closing_day,
+				        max(record_date) OVER (PARTITION BY period)                              AS last_snapshot_date,
+				        substring(period, 1, 4) = max(substring(period, 1, 4)) OVER ()           AS in_closing_year
 				    FROM agg
 				)
 				SELECT
@@ -288,6 +319,10 @@ table FactBreaks
 				    closing_rank,
 				    multiIf(closing_rank = 1, 'Current', closing_rank = 2, 'Previous', 'Older')
 				        || ' (' || period || ')'                                                AS closing,
+				    multiIf(closing_rank = 1, 'Current', closing_rank = 2, 'Previous', 'Older') AS closing_scope,
+				    arrayElement(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+				                 toUInt8(substring(period, 5, 2))) || ' ' || substring(period, 1, 4) AS closing_month,
+				    if(in_closing_year AND record_date = last_snapshot_date, 'Y', 'N')          AS year_trend_snapshot,
 				    closing_day,
 				    rec_id,
 				    multiIf(positionCaseInsensitive(rec_id, 'CARRY') > 0, 'Carry',
@@ -305,13 +340,17 @@ table FactBreaks
 				    nb_breaks,
 				    amt_breaks
 				FROM ranked
-				WHERE closing_rank <= 2",
+				WHERE closing_rank <= 2
+				   OR (in_closing_year AND record_date = last_snapshot_date)",
 				    Source = Odbc.Query("dsn=" & DsnName, Sql),
 				    Typed = Table.TransformColumnTypes(Source, {
 				        {"period", type text},
 				        {"record_date", type date},
 				        {"closing_rank", Int64.Type},
 				        {"closing", type text},
+				        {"closing_scope", type text},
+				        {"closing_month", type text},
+				        {"year_trend_snapshot", type text},
 				        {"closing_day", Int64.Type},
 				        {"rec_id", type text},
 				        {"reconciliation", type text},
