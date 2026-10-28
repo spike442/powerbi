@@ -5,8 +5,8 @@ The `project/` PBIP is the reference design: open it in regular Power BI Desktop
 Files to paste from: `src/03_FactBreaks.pq`, `src/04_measures.dax`. French menu names in brackets.
 
 ## 0. Before you start
-- [ ] The view exists on the target ClickHouse: run `src/05_view_kpi_rec_dashboard.sql` (ON CLUSTER) on INT, then PROD.
-- [ ] Check: `SELECT breakdown, component, threshold, count() FROM Hera_SA.V_KPI_REC_DASHBOARD GROUP BY 1, 2, 3 ORDER BY 1, 2, 3`
+- [ ] The view exists on the target ClickHouse: run `src/POWER_BI_DASHBOARD_KPI_VIEW.sql` (ON CLUSTER) on INT, then PROD.
+- [ ] Check: `SELECT breakdown, component, threshold, count() FROM Hera_SA.POWER_BI_DASHBOARD_KPI_VIEW GROUP BY 1, 2, 3 ORDER BY 1, 2, 3`
       → Threshold rows for PNL / PV / Cash × Above / Below, Band rows for PNL.
 - [ ] RS Desktop: Help → About (Aide → À propos) says **May 2026**. File → New.
 - [ ] File → Options → Current file → Data load (Fichier actuel → Chargement des données): untick
@@ -108,7 +108,7 @@ If subtitles / fx are missing in RS Desktop, skip them (information only).
 
 ## 8. Hand-off note for the Report Server admin
 > **KPI_Closing_Progress.pbix** – Power BI Desktop for Report Server May 2026.
-> - Data source: ODBC `dsn=HERA_CH` (System DSN, 64-bit), ClickHouse view `Hera_SA.V_KPI_REC_DASHBOARD` (already created).
+> - Data source: ODBC `dsn=HERA_CH` (System DSN, 64-bit), ClickHouse view `Hera_SA.POWER_BI_DASHBOARD_KPI_VIEW` (already created).
 > - After upload: Manage → Data sources → set the credentials, Test connection, then refresh once.
 > - Scheduled refresh: **daily, after the KPI snapshot load** (the "current month" and "current closing" are computed at refresh).
 > - Access: Browser role for the readers.

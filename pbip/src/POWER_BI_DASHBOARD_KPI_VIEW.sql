@@ -1,5 +1,5 @@
 -- =====================================================================
--- Hera_SA.V_KPI_REC_DASHBOARD — single source for the 3 Power BI dashboards
+-- Hera_SA.POWER_BI_DASHBOARD_KPI_VIEW — single source for the 3 Power BI dashboards
 --   (a) Closing Progress   : breakdown = 'Threshold', closing_scope IN ('Current','Previous')
 --   (b) Snapshot Detail    : breakdown = 'Band', current_month_snapshot = 'Y'
 --   (c) Yearly Trend       : breakdown = 'Threshold', year_trend_snapshot = 'Y'
@@ -9,7 +9,7 @@
 -- Only closings from last year onwards are read (enough for current + previous closing
 -- and the closing year, also in January while the December closing is still running).
 -- =====================================================================
-CREATE OR REPLACE VIEW Hera_SA.V_KPI_REC_DASHBOARD ON CLUSTER hera_cluster_1S_2R AS
+CREATE OR REPLACE VIEW Hera_SA.POWER_BI_DASHBOARD_KPI_VIEW ON CLUSTER hera_cluster_1S_2R AS
 WITH latest AS (
     -- safety net: one snapshot per (REC_ID, PERIOD, day) = highest VERSION
     SELECT REC_ID, PERIOD, CMN_RECORD_DATE, max(VERSION) AS VERSION
@@ -32,19 +32,19 @@ unpivoted AS (
         tupleElement(m, 5)      AS nb,
         tupleElement(m, 6)      AS amt
     FROM Hera_SA.KPI_REC_ALL AS k
-    ARRAY JOIN [
-        ('PNL',  'Above', 'All', 0, NB_YPNL_BREAK_BGM_ECO_EUR_ABOVE,  AMT_YPNL_BREAK_BGM_ECO_EUR_ABOVE),
-        ('PNL',  'Below', 'All', 0, NB_YPNL_BREAK_BGM_ECO_EUR_BELOW,  AMT_YPNL_BREAK_BGM_ECO_EUR_BELOW),
-        ('PV',   'Above', 'All', 0, NB_YPV_BREAK_BGM_ECO_EUR_ABOVE,   AMT_YPV_BREAK_BGM_ECO_EUR_ABOVE),
-        ('PV',   'Below', 'All', 0, NB_YPV_BREAK_BGM_ECO_EUR_BELOW,   AMT_YPV_BREAK_BGM_ECO_EUR_BELOW),
-        ('Cash', 'Above', 'All', 0, NB_YCASH_BREAK_BGM_ECO_EUR_ABOVE, AMT_YCASH_BREAK_BGM_ECO_EUR_ABOVE),
-        ('Cash', 'Below', 'All', 0, NB_YCASH_BREAK_BGM_ECO_EUR_BELOW, AMT_YCASH_BREAK_BGM_ECO_EUR_BELOW),
+    ARRAY JOIN [  -- nb/amt cast to Float64: the source columns mix Int64 and Float64
+        ('PNL',  'Above', 'All', 0, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_ABOVE),  toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_ABOVE)),
+        ('PNL',  'Below', 'All', 0, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_BELOW),  toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_BELOW)),
+        ('PV',   'Above', 'All', 0, toFloat64(NB_YPV_BREAK_BGM_ECO_EUR_ABOVE),   toFloat64(AMT_YPV_BREAK_BGM_ECO_EUR_ABOVE)),
+        ('PV',   'Below', 'All', 0, toFloat64(NB_YPV_BREAK_BGM_ECO_EUR_BELOW),   toFloat64(AMT_YPV_BREAK_BGM_ECO_EUR_BELOW)),
+        ('Cash', 'Above', 'All', 0, toFloat64(NB_YCASH_BREAK_BGM_ECO_EUR_ABOVE), toFloat64(AMT_YCASH_BREAK_BGM_ECO_EUR_ABOVE)),
+        ('Cash', 'Below', 'All', 0, toFloat64(NB_YCASH_BREAK_BGM_ECO_EUR_BELOW), toFloat64(AMT_YCASH_BREAK_BGM_ECO_EUR_BELOW)),
         -- amount bands (PNL only in the table, not split by threshold)
-        ('PNL',  'All',   '1K - 100K',   1, NB_YPNL_BREAK_BGM_ECO_EUR_LE_100K, AMT_YPNL_BREAK_BGM_ECO_EUR_LE_100K),
-        ('PNL',  'All',   '100K - 300K', 2, NB_YPNL_BREAK_BGM_ECO_EUR_LE_300K, AMT_YPNL_BREAK_BGM_ECO_EUR_LE_300K),
-        ('PNL',  'All',   '300K - 500K', 3, NB_YPNL_BREAK_BGM_ECO_EUR_LE_500K, AMT_YPNL_BREAK_BGM_ECO_EUR_LE_500K),
-        ('PNL',  'All',   '500K - 1M',   4, NB_YPNL_BREAK_BGM_ECO_EUR_LE_1M,   AMT_YPNL_BREAK_BGM_ECO_EUR_LE_1M),
-        ('PNL',  'All',   '> 1M',        5, NB_YPNL_BREAK_BGM_ECO_EUR_GT_1M,   AMT_YPNL_BREAK_BGM_ECO_EUR_GT_1M)
+        ('PNL',  'All',   '1K - 100K',   1, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_LE_100K), toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_LE_100K)),
+        ('PNL',  'All',   '100K - 300K', 2, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_LE_300K), toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_LE_300K)),
+        ('PNL',  'All',   '300K - 500K', 3, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_LE_500K), toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_LE_500K)),
+        ('PNL',  'All',   '500K - 1M',   4, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_LE_1M),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_LE_1M)),
+        ('PNL',  'All',   '> 1M',        5, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_GT_1M),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_GT_1M))
     ] AS m
     WHERE k.PERIOD >= toString(toYear(today()) - 1)
       AND (k.REC_ID, k.PERIOD, k.CMN_RECORD_DATE, k.VERSION) IN (SELECT REC_ID, PERIOD, CMN_RECORD_DATE, VERSION FROM latest)
@@ -101,4 +101,5 @@ SELECT
     amt_breaks
 FROM ranked
 WHERE closing_rank <= 2                                         -- (a), (b): current + previous, all days
-   OR (in_closing_year AND record_date = last_snapshot_date)     -- (c): latest snapshot of each closing of the year;
+   OR (in_closing_year AND record_date = last_snapshot_date)     -- (c): latest snapshot of each closing of the year
+;

@@ -1,11 +1,11 @@
 // =====================================================================
-// FactBreaks — Power Query (M), reads the ClickHouse view (05_view_kpi_rec_dashboard.sql)
+// FactBreaks — Power Query (M), reads the ClickHouse view (POWER_BI_DASHBOARD_KPI_VIEW.sql)
 // RS Desktop: Home > Transform data > New Source > Blank Query > Advanced Editor > paste
 // DSN HERA_CH must exist (same name on your PC and on the Report Server)
 // =====================================================================
 let
     Source = Odbc.Query("dsn=HERA_CH",
-        "SELECT period, record_date, closing_rank, closing_order, closing, closing_scope, closing_month, year_trend_snapshot, closing_day, reconciliation, entity, product, component, threshold, band, band_order, breakdown, current_month_snapshot, nb_breaks, amt_breaks FROM Hera_SA.V_KPI_REC_DASHBOARD"),
+        "SELECT period, record_date, closing_rank, closing_order, closing, closing_scope, closing_month, year_trend_snapshot, closing_day, reconciliation, entity, product, component, threshold, band, band_order, breakdown, current_month_snapshot, nb_breaks, amt_breaks FROM Hera_SA.POWER_BI_DASHBOARD_KPI_VIEW"),
     Typed = Table.TransformColumnTypes(Source, {
         {"period", type text},
         {"record_date", type date},
