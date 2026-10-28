@@ -1,0 +1,88 @@
+// =====================================================================
+// DAX measures for the 3 pages, all in table FactBreaks
+// Create each with: Modeling > New measure > paste (one block per measure)
+//
+// The KPIs are daily STOCK snapshots: they must never be summed across
+// days. Every base measure therefore keeps only the LAST snapshot date
+// in the current filter context (semi-additive).
+// =====================================================================
+
+
+// ---------- Base measures (used on the charts) -----------------------
+
+Breaks # =
+VAR _lastDate = MAX ( FactBreaks[record_date] )
+RETURN
+    CALCULATE ( SUM ( FactBreaks[nb_breaks] ), FactBreaks[record_date] = _lastDate )
+
+Residual Amount (EUR) =
+VAR _lastDate = MAX ( FactBreaks[record_date] )
+RETURN
+    CALCULATE ( SUM ( FactBreaks[amt_breaks] ), FactBreaks[record_date] = _lastDate )
+
+Snapshot Date =
+MAX ( FactBreaks[record_date] )
+
+
+// ---------- Current vs Previous at the same closing day --------------
+// Used in the chart tooltips. "Same day" = previous closing's
+// latest snapshot whose closing_day <= current closing's latest day.
+
+Current Closing Day =
+CALCULATE (
+    MAX ( FactBreaks[closing_day] ),
+    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+    FactBreaks[closing_rank] = 1
+)
+
+Breaks # Current =
+CALCULATE (
+    [Breaks #],
+    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+    FactBreaks[closing_rank] = 1
+)
+
+Breaks # Previous =
+VAR _day = [Current Closing Day]
+RETURN
+    CALCULATE (
+        [Breaks #],
+        REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date], FactBreaks[closing_day] ),
+        FactBreaks[closing_rank] = 2,
+        FactBreaks[closing_day] <= _day
+    )
+
+Breaks # vs Previous =
+[Breaks # Current] - [Breaks # Previous]
+
+Residual Amount Current =
+CALCULATE (
+    [Residual Amount (EUR)],
+    REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date] ),
+    FactBreaks[closing_rank] = 1
+)
+
+Residual Amount Previous =
+VAR _day = [Current Closing Day]
+RETURN
+    CALCULATE (
+        [Residual Amount (EUR)],
+        REMOVEFILTERS ( FactBreaks[closing], FactBreaks[period], FactBreaks[record_date], FactBreaks[closing_day] ),
+        FactBreaks[closing_rank] = 2,
+        FactBreaks[closing_day] <= _day
+    )
+
+Residual Amount vs Previous =
+[Residual Amount Current] - [Residual Amount Previous]
+
+
+// ---------- Dashboard (b) -------------------------------------------
+
+Snapshot Subtitle =
+"Snapshot " & FORMAT ( MAX ( FactBreaks[record_date] ), "dd/mm/yyyy" ) & "  ·  closing " & MAX ( FactBreaks[period] ) & "  ·  PNL"
+
+
+// ---------- Dashboard (c) -------------------------------------------
+
+Year Subtitle =
+"Closings of " & LEFT ( MAX ( FactBreaks[period] ), 4 ) & "  ·  latest snapshot of each closing (current closing: in progress)"

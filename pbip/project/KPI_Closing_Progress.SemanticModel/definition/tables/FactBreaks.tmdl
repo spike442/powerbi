@@ -55,11 +55,6 @@ table FactBreaks
 		formatString: #,0
 		lineageTag: fff870e6-7d6f-5467-8990-cf308abb9f22
 
-	measure 'Breaks # vs Previous %' =
-			DIVIDE ( [Breaks # vs Previous], [Breaks # Previous] )
-		formatString: 0.0%
-		lineageTag: debc1985-d651-5bba-a245-b9e609340d5f
-
 	measure 'Residual Amount Current' =
 			CALCULATE (
 			    [Residual Amount (EUR)],
@@ -120,6 +115,15 @@ table FactBreaks
 
 		annotation SummarizationSetBy = User
 
+	column closing_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 55503f75-1cdf-53ac-ab02-6cdd4dfc09e5
+		summarizeBy: none
+		sourceColumn: closing_order
+
+		annotation SummarizationSetBy = User
+
 	column closing
 		dataType: string
 		lineageTag: 4a7c3efd-0fa9-513c-9c9c-2bfe77086ca0
@@ -142,7 +146,7 @@ table FactBreaks
 		lineageTag: 54441467-2413-5de2-aac4-c45c8d16dabb
 		summarizeBy: none
 		sourceColumn: closing_month
-		sortByColumn: period
+		sortByColumn: closing_order
 
 		annotation SummarizationSetBy = User
 
@@ -160,14 +164,6 @@ table FactBreaks
 		lineageTag: ac79badf-3704-5975-960a-5d19404ebb36
 		summarizeBy: none
 		sourceColumn: closing_day
-
-		annotation SummarizationSetBy = User
-
-	column rec_id
-		dataType: string
-		lineageTag: f2dcc0fc-6f83-5248-af58-7e90125b2145
-		summarizeBy: none
-		sourceColumn: rec_id
 
 		annotation SummarizationSetBy = User
 
@@ -267,17 +263,18 @@ table FactBreaks
 		mode: import
 		source =
 				let
-				    Source = Odbc.Query("dsn=" & DsnName, "SELECT * FROM Hera_SA.V_KPI_REC_DASHBOARD"),
+				    Source = Odbc.Query("dsn=HERA_CH",
+				        "SELECT period, record_date, closing_rank, closing_order, closing, closing_scope, closing_month, year_trend_snapshot, closing_day, reconciliation, entity, product, component, threshold, band, band_order, breakdown, current_month_snapshot, nb_breaks, amt_breaks FROM Hera_SA.V_KPI_REC_DASHBOARD"),
 				    Typed = Table.TransformColumnTypes(Source, {
 				        {"period", type text},
 				        {"record_date", type date},
 				        {"closing_rank", Int64.Type},
+				        {"closing_order", Int64.Type},
 				        {"closing", type text},
 				        {"closing_scope", type text},
 				        {"closing_month", type text},
 				        {"year_trend_snapshot", type text},
 				        {"closing_day", Int64.Type},
-				        {"rec_id", type text},
 				        {"reconciliation", type text},
 				        {"entity", type text},
 				        {"product", type text},

@@ -4,14 +4,17 @@
 --   (b) Snapshot Detail    : breakdown = 'Band', current_month_snapshot = 'Y'
 --   (c) Yearly Trend       : breakdown = 'Threshold', year_trend_snapshot = 'Y'
 -- Components: PNL, PV, Cash (Above/Below). Amount bands exist for PNL only.
--- Power BI query: SELECT * FROM Hera_SA.V_KPI_REC_DASHBOARD
+-- Read by Power BI with an explicit column list (pbip/src/03_FactBreaks.pq).
 -- today() is evaluated at query time, i.e. at each Power BI refresh.
+-- Only closings from last year onwards are read (enough for current + previous closing
+-- and the closing year, also in January while the December closing is still running).
 -- =====================================================================
 CREATE OR REPLACE VIEW Hera_SA.V_KPI_REC_DASHBOARD ON CLUSTER hera_cluster_1S_2R AS
 WITH latest AS (
     -- safety net: one snapshot per (REC_ID, PERIOD, day) = highest VERSION
     SELECT REC_ID, PERIOD, CMN_RECORD_DATE, max(VERSION) AS VERSION
     FROM Hera_SA.KPI_REC_ALL
+    WHERE PERIOD >= toString(toYear(today()) - 1)
     GROUP BY REC_ID, PERIOD, CMN_RECORD_DATE
 ),
 unpivoted AS (
@@ -43,7 +46,8 @@ unpivoted AS (
         ('PNL',  'All',   '500K - 1M',   4, NB_YPNL_BREAK_BGM_ECO_EUR_LE_1M,   AMT_YPNL_BREAK_BGM_ECO_EUR_LE_1M),
         ('PNL',  'All',   '> 1M',        5, NB_YPNL_BREAK_BGM_ECO_EUR_GT_1M,   AMT_YPNL_BREAK_BGM_ECO_EUR_GT_1M)
     ] AS m
-    WHERE (k.REC_ID, k.PERIOD, k.CMN_RECORD_DATE, k.VERSION) IN (SELECT REC_ID, PERIOD, CMN_RECORD_DATE, VERSION FROM latest)
+    WHERE k.PERIOD >= toString(toYear(today()) - 1)
+      AND (k.REC_ID, k.PERIOD, k.CMN_RECORD_DATE, k.VERSION) IN (SELECT REC_ID, PERIOD, CMN_RECORD_DATE, VERSION FROM latest)
 ),
 agg AS (
     SELECT period, record_date, rec_id, entity, product, component, threshold, band, band_order,
@@ -69,6 +73,7 @@ SELECT
     period,
     record_date,
     closing_rank,
+    toUInt32(substring(period, 1, 6))                                           AS closing_order,  -- 202609: sorts closing_month
     multiIf(closing_rank = 1, 'Current', closing_rank = 2, 'Previous', 'Older')
         || ' (' || period || ')'                                                AS closing,
     multiIf(closing_rank = 1, 'Current', closing_rank = 2, 'Previous', 'Older') AS closing_scope,

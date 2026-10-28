@@ -6,6 +6,8 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["DsnName","FactBreaks"]
+annotation PBI_QueryOrder = ["FactBreaks"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
 
 ref table FactBreaks
