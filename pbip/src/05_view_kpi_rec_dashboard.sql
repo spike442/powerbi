@@ -3,8 +3,7 @@
 --   (a) Closing Progress   : breakdown = 'Threshold', closing_scope IN ('Current','Previous')
 --   (b) Snapshot Detail    : breakdown = 'Band', current_month_snapshot = 'Y'
 --   (c) Yearly Trend       : breakdown = 'Threshold', year_trend_snapshot = 'Y'
--- PNL-only version: create this now. When the 8 YPV/YCASH _ABOVE/_BELOW columns exist,
--- run 05_view_kpi_rec_dashboard_full.sql instead (same output columns, Power BI unchanged).
+-- Components: PNL, PV, Cash (Above/Below). Amount bands exist for PNL only.
 -- Power BI query: SELECT * FROM Hera_SA.V_KPI_REC_DASHBOARD
 -- today() is evaluated at query time, i.e. at each Power BI refresh.
 -- =====================================================================
@@ -33,6 +32,10 @@ unpivoted AS (
     ARRAY JOIN [
         ('PNL',  'Above', 'All', 0, NB_YPNL_BREAK_BGM_ECO_EUR_ABOVE,  AMT_YPNL_BREAK_BGM_ECO_EUR_ABOVE),
         ('PNL',  'Below', 'All', 0, NB_YPNL_BREAK_BGM_ECO_EUR_BELOW,  AMT_YPNL_BREAK_BGM_ECO_EUR_BELOW),
+        ('PV',   'Above', 'All', 0, NB_YPV_BREAK_BGM_ECO_EUR_ABOVE,   AMT_YPV_BREAK_BGM_ECO_EUR_ABOVE),
+        ('PV',   'Below', 'All', 0, NB_YPV_BREAK_BGM_ECO_EUR_BELOW,   AMT_YPV_BREAK_BGM_ECO_EUR_BELOW),
+        ('Cash', 'Above', 'All', 0, NB_YCASH_BREAK_BGM_ECO_EUR_ABOVE, AMT_YCASH_BREAK_BGM_ECO_EUR_ABOVE),
+        ('Cash', 'Below', 'All', 0, NB_YCASH_BREAK_BGM_ECO_EUR_BELOW, AMT_YCASH_BREAK_BGM_ECO_EUR_BELOW),
         -- amount bands (PNL only in the table, not split by threshold)
         ('PNL',  'All',   '1K - 100K',   1, NB_YPNL_BREAK_BGM_ECO_EUR_LE_100K, AMT_YPNL_BREAK_BGM_ECO_EUR_LE_100K),
         ('PNL',  'All',   '100K - 300K', 2, NB_YPNL_BREAK_BGM_ECO_EUR_LE_300K, AMT_YPNL_BREAK_BGM_ECO_EUR_LE_300K),

@@ -87,7 +87,7 @@ table FactBreaks
 		lineageTag: 71621ed3-e407-5dd3-af5f-b1e46cc28eac
 
 	measure 'Snapshot Subtitle' =
-			"Snapshot " & FORMAT ( MAX ( FactBreaks[record_date] ), "dd/mm/yyyy" ) & "  ·  closing " & MAX ( FactBreaks[period] )
+			"Snapshot " & FORMAT ( MAX ( FactBreaks[record_date] ), "dd/mm/yyyy" ) & "  ·  closing " & MAX ( FactBreaks[period] ) & "  ·  PNL"
 		lineageTag: 816c4ec4-ba5f-5b0a-b79c-9eb434469081
 
 	measure 'Year Subtitle' =
