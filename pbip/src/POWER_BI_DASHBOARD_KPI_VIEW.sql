@@ -5,20 +5,30 @@ WITH latest_version AS (
     WHERE PERIOD >= toString(toYear(today()) - 1)
     GROUP BY REC_ID, PERIOD, CMN_RECORD_DATE
 ),
+snapshots AS (
+    SELECT k.*
+    FROM Hera_SA.KPI_REC_ALL AS k
+    INNER JOIN latest_version AS l
+        ON  k.REC_ID = l.REC_ID
+        AND k.PERIOD = l.PERIOD
+        AND k.CMN_RECORD_DATE = l.CMN_RECORD_DATE
+        AND k.VERSION = l.VERSION
+    WHERE k.PERIOD >= toString(toYear(today()) - 1)
+),
 unpivoted AS (
     SELECT
-        k.PERIOD                                           AS period,
-        k.CMN_RECORD_DATE                                  AS record_date,
-        k.REC_ID                                           AS rec_id,
-        k.ENT_ACC                                          AS entity,
-        if(empty(k.CAT_NAME), '(No category)', k.CAT_NAME) AS product,
-        tupleElement(m, 1)                                 AS component,
-        tupleElement(m, 2)                                 AS threshold,
-        tupleElement(m, 3)                                 AS band,
-        tupleElement(m, 4)                                 AS band_order,
-        tupleElement(m, 5)                                 AS nb,
-        tupleElement(m, 6)                                 AS amt
-    FROM Hera_SA.KPI_REC_ALL AS k
+        PERIOD                                         AS period,
+        CMN_RECORD_DATE                                AS record_date,
+        REC_ID                                         AS rec_id,
+        ENT_ACC                                        AS entity,
+        if(empty(CAT_NAME), '(No category)', CAT_NAME) AS product,
+        tupleElement(m, 1)                             AS component,
+        tupleElement(m, 2)                             AS threshold,
+        tupleElement(m, 3)                             AS band,
+        tupleElement(m, 4)                             AS band_order,
+        tupleElement(m, 5)                             AS nb,
+        tupleElement(m, 6)                             AS amt
+    FROM snapshots
     ARRAY JOIN [
         ('PNL',  'Above', 'All',         0, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_ABOVE),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_ABOVE)),
         ('PNL',  'Below', 'All',         0, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_BELOW),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_BELOW)),
@@ -32,8 +42,6 @@ unpivoted AS (
         ('PNL',  'All',   '500K - 1M',   4, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_LE_1M),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_LE_1M)),
         ('PNL',  'All',   '> 1M',        5, toFloat64(NB_YPNL_BREAK_BGM_ECO_EUR_GT_1M),   toFloat64(AMT_YPNL_BREAK_BGM_ECO_EUR_GT_1M))
     ] AS m
-    WHERE k.PERIOD >= toString(toYear(today()) - 1)
-      AND (k.REC_ID, k.PERIOD, k.CMN_RECORD_DATE, k.VERSION) IN (SELECT REC_ID, PERIOD, CMN_RECORD_DATE, VERSION FROM latest_version)
 ),
 aggregated AS (
     SELECT
